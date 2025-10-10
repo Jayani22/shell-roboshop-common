@@ -11,10 +11,14 @@ systemd_setup
 dnf install mysql -y &>>$LOG_FILE
 
 mysql -h $MYSQL_HOST -uroot -pRoboShop@1 -e 'use cities' &>>LOG_FILE
+VALIDATE $? "Setting up username"
 if [ $? -ne 0 ]; then
     mysql -h $MYSQL_HOST -uroot -pRoboShop@1 < /app/db/schema.sql &>>LOG_FILE
+    VALIDATE $? "Schema"
     mysql -h $MYSQL_HOST -uroot -pRoboShop@1 < /app/db/app-user.sql &>>LOG_FILE
+    VALIDATE $? "App-user"
     mysql -h $MYSQL_HOST -uroot -pRoboShop@1 < /app/db/master-data.sql &>>LOG_FILE
+    VALIDATE $? "Master-data"
 else
     echo -e "Shipping data is already loaded"
 fi
