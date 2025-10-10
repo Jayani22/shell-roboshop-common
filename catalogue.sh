@@ -3,6 +3,8 @@
 source ./common.sh
 app_name=catalogue
 
+check_root
+
 application_setup
 nodejs_setup
 systemd_setup
